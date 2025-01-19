@@ -41,7 +41,7 @@ Note:
 
 ##### Windows (Admin Privileges)
 
-```powershell
+
 .\install_windows.ps1
 
 # 6Asset Parameters
