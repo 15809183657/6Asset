@@ -1,10 +1,10 @@
-# IPv6 Aliased Prefixes Checker参数
+# IPv6 Aliased Prefixes Checker Parameters
 
-- f: 待检测的地址文件路径
-- prefix_len: 前缀长度, 默认为64
-- prefix_count: 已知或预测的前缀数量, 仅用于优化内存占用，默认为100万
-- rand_addr_len: 每个前缀生成的随机地址数量
-- aliased_threshold: 别名阈限， 当一个前缀响应地址数量达到   别名阈限*每前缀随机地址数量 时，该前缀被计为别名前缀, 取值范围(0.0,1.0], 注意必须带小数点
-- output_alia_addrs: 是否统计并输出别名前缀下的别名地址
-- prefixes_len_per_batch: 每轮次对多少前缀进行探测, 默认为100万
-- not_aliased_records_path: 输出非别名记录的路径, 默认不输出
+- `f`: Path to the file containing addresses to be checked.
+- `prefix_len`: Prefix length, default is 64.
+- `prefix_count`: Number of known or predicted prefixes, used only to optimize memory usage, default is 1 million.
+- `rand_addr_len`: Number of random addresses generated per prefix.
+- `aliased_threshold`: Alias threshold. A prefix is considered aliased if the number of responding addresses reaches `aliased_threshold * rand_addr_len`. The value range is (0.0, 1.0], and it must include a decimal point.
+- `output_alia_addrs`: Whether to count and output aliased addresses under aliased prefixes.
+- `prefixes_len_per_batch`: Number of prefixes to probe per batch, default is 1 million.
+- `not_aliased_records_path`: Path to output non-aliased records. By default, no output is generated.
