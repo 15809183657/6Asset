@@ -56,9 +56,10 @@ Note:
 ```shell
 ./install_macos.sh
 ```
+<span style="color:red;">这是红色字体</span>
 
 ## Pre-Configuration
-### Check the configuration of the destination and source address black and white lists (Path: block_list folder under the installation path; you can enter the command 6Asset to get the current installation path). The black and white lists support domain names (multiple addresses corresponding to the domain name can be added simultaneously), single addresses, and subnets.
+Check the configuration of the destination and source address black and white lists (Path: block_list folder under the installation path; you can enter the command 6Asset to get the current installation path). The black and white lists support domain names (multiple addresses corresponding to the domain name can be added simultaneously), single addresses, and subnets.
 
 Note: The source address checker will automatically filter private addresses and marked subnets, regardless of whether they are automatically retrieved from the system or manually entered. If you need to use private addresses as source addresses, such as those from campus networks, corporate, or home internal networks, you must add the local network to the source address whitelist.
 
@@ -97,4 +98,4 @@ Note: The source address checker will automatically filter private addresses and
 To probe with a budget of 50M, bandwidth of 30M, and the number of addresses generated per round based on reinforcement learning feedback is 2M, using online alias prefix detection:
 
 ```bash
-smap -m a6 -b 30m -f ./testData.txt -a budget=50000000 -a region_extraction_num=1000 --cool_seconds 3 --output_file_v6 ./res.txt -a batch_size=2000000 -a aliased_threshold=0.8 -a aliased_prefixes_check=true
+smap -m a6 -b 60m -f ./testData.txt -a budget=5000000 -a region_extraction_num=1000 --cool_seconds 3 --output_file_v6 ./res.txt -a batch_size=2000000 -a aliased_threshold=0.8 -a aliased_prefixes_check=true
