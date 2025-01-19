@@ -56,8 +56,9 @@ Note:
 ```shell
 ./install_macos.sh
 ```
-<span style="color:red;">这是红色字体</span>
+🔴注意：安装的时候
 
+<font color=red>我是红色</font>
 ## Pre-Configuration
 Check the configuration of the destination and source address black and white lists (Path: block_list folder under the installation path; you can enter the command 6Asset to get the current installation path). The black and white lists support domain names (multiple addresses corresponding to the domain name can be added simultaneously), single addresses, and subnets.
 
