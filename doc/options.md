@@ -22,7 +22,7 @@ Note: The first parameter of the send and receive functions is the network inter
 
 ```shell
 smap -m mode_name -a name_1=val_1 -a name_2=val_2 -a name_3=val_3  ...
-` ` `
+```
 
 - **--probe_v4** : indicates the name of the Ipv4 probe module, which is used to probe ipv4 addresses. The probe module is independent of the ipv6 probe module
 
@@ -91,7 +91,7 @@ smap -m mode_name -a name_1=val_1 -a name_2=val_2 -a name_3=val_3  ...
 
 ```shell
 smap --mode_help  mode_name_1
-` ` `
+```
 
 - **--probe_v4_help** : indicates the name of the ipv4 probe module. The help information about the corresponding ipv4 probe module is displayed
 
@@ -119,4 +119,4 @@ Be careful not to end the path with the. Extension. The path will be filled as
 
 ```shell
 Set path_mode name_target name.csv
-` ` `
+```
