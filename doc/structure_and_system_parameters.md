@@ -1,282 +1,282 @@
-## 结构概览
+## Structure overview
 
-<img src="https://cdn.sa.net/2023/12/30/F6K4qU5C8BpNlM1.png" alt="smap.png" style="zoom: 50%;" />
+<img src="https://cdn.sa.net/2023/12/30/F6K4qU5C8BpNlM1.png" alt="smap.png" style="zoom: 50%;"  />
 
 ## core
 
-### 概述
+### Overview
 
-该部分为本程序的核心部分, 主要包括 配置解析, 接收函数, 发送函数, 系统调用.
+This part is divided into the core part of the program, mainly including configuration analysis, receiving function, sending function, system call.
 
 ### conf
 
-**set_conf**: 基础配置, 接收配置, 发送配置 的配置模块
+**set_conf**: Basic configuration, receive configuration, send configuration configuration module
 
-**args**: 命令行参数设置
+**args**: Command line parameter Settings
 
-**sys_config**: sys_conf.ini的解析模块
+**sys_config**: Parsing module for sys_conf.ini
 
-**modules_config**: 自定义参数的解析模块
+**modules_config**: A resolution module with custom parameters
 
-**tools**: 参数解析, 网络接口硬件解析等
+**tools**: Parameter analysis, network interface hardware analysis, etc
 
 ### receiver
 
-各种接收函数及其对应的包处理函数
+Various receiving functions and their corresponding packet handling functions
 
-注意: 自定义的接收函数应当与base同级, 参照pmap实现
+Note: Custom receive functions should be at the same level as base, with reference to pmap implementation
 
 ### sender
 
-**v4**: ipv4发送函数
+**v4**: ipv4 send function
 
-**v6**: ipv6发送函数
+**v6**: ipv6 send function
 
-**tools**: 发送函数的辅助类, 如PID速率控制器, 源地址迭代器等.
+**tools**: Auxiliary classes for sending functions, such as PID rate controllers, source address iterators, etc.
 
-注意: 自定义的发送函数应当与base同级, 参照pmap实现
+Note: The custom send function should be the same as base, with reference to pmap implementation
 
 ### sys
 
-**packet_sender**: 各操作系统平台的发包函数
+**packet_sender**: Packet sending function of each operating system
 
-**logger**: 系统日志配置
+**logger**: System log configuration
 
 ## modes
 
-### 概述
+### Overview
 
-模式是本程序的核心, 一般由 定义结构体(包括帮助信息接口), 构造函数, 执行函数三个部分构成. 
+Pattern is the core of this program, generally by the definition of structure (including help information interface), the construction function, the execution function of three parts.
 
-定义结构体中定义需要使用的全局参数, 如基础配置, 发送配置, 探测模块, 拦截器等. 
+Define the global parameters that need to be used in the definition structure, such as base configuration, send configuration, probe module, interceptor, etc.
 
-构造函数以命令行参数为输入, 由开发者决定构造目标和构造逻辑.
+Constructors take command line arguments as input, and it is up to the developer to determine the construction target and construction logic.
 
-执行函数以构造函数构造好的结构体为基础, 执行由用户定义的探测逻辑, 并由用户决定是否进行记录和输出, 以及记录和输出哪些内容.
+The execution function is based on the structure constructed by the constructor, executes the probe logic defined by the user, and it is up to the user to decide whether to record and output, and what to record and output.
 
-### 注意事项
+### Precautions
 
-- 模式的创建应该符合规范, 在对应mod下以独立文件夹形式创建独立的mod. 
-- mod内的rs文件一般命名为mod, new, execute, 分别对应定义函数, 构造函数, 执行函数. 注意execute函数和帮助函数必须调用对应接口, 构造函数需要符合规范. 如需创建更多rs源文件, 请使用tools.rs或tools文件夹.
-- 所有可用模式必须在modes文件夹下的mod.rs中进行挂载, 且在MODES数组中进行声明.
-- **模式, ipv4探测模块,  ipv6探测模块, 输出模块** 的帮助函数需要在helper_mode下的modules_helper中挂载, 否则无效
+- The creation of the mode should comply with the specification, and the creation of a separate mod in the form of a separate folder under the corresponding mod.
+The rs file in mod is generally named mod, new, execute, corresponding to the definition function, the constructor function, and the execution function respectively. Note the execute function and help function must call the corresponding interface, and the constructor must comply with the specification. To create more rs source files, use the tools.rs or tools folder.
+- All available modes must be mounted in mod.rs under the MODES folder and declared in the Modes array.
+- ** mode, ipv4 probe module, ipv6 probe module, output module ** help function must be mounted in the helper_mode modules_helper, otherwise invalid
 
-### 子模块
+### Submodule
 
-**helper_mode** : 打印帮助信息的模块. 
+**helper_mode** : indicates the module for printing help information.
 
-**mix** : ipv4和ipv6混合模式
+**mix** : indicates the mixed mode of ipv4 and ipv6
 
-**v4** : ipv4模式
+**v4** : indicates ipv4 mode
 
-**v6** : ipv6模式
+**v6** : ipv6 mode
 
-**macros** : 模式中的宏定义
+**macros** : Macro definition in the schema
 
 ## modules
 
-### 概述
+### Overview
 
-当前包括 输出模块, 探测模块, 目标迭代器模块 , 后续可能按需添加新的模块类别.
+Currently includes output module, probe module, target iterator module, and new module categories may be added later as needed.
 
 ### output_modules
 
-除记录文件(输入参数, 探测结果摘要)外, 所有输出均使用用户或模式选择的输出模块进行输出.
+Except for the record file (input parameters, summary of probe results), all outputs are output using the output module selected by the user or mode.
 
-注意: 
+Attention:
 
-- 输出模块原则上使用单个rs源文件.
-- 输出模块需要实现 全局构造方法(new) 和 线程初始化函数(init) 并在output_modules的mod.rs下进行挂载.
-- 输出模块需要在 OUTPUT_MODS 中进行声明.
-- 输出模块需要实现 OutputMethod接口 和 帮助信息 接口.
+- The output module in principle uses a single rs source file.
+The output module needs to implement the global constructor (new) and thread initialization function (init) and be mounted under mod.rs of output_modules.
+- The output module must be declared in OUTPUT_MODS.
+- The output module must implement the OutputMethod interface and help interface.
 
 ### probe_modules
 
-每个探测模块通常由 mod.rs 和 method.rs 构成.
+Each probe module is typically composed of mod.rs and method.rs.
 
-mod.rs包括探测模块的定义, 全局构造方法, 线程初始化函数, 帮助信息函数. 每个探测模块均可以按照自身需要完全自定义所需的字段, 并进行完全自定义的构造过程和线程初始化. 
+mod.rs includes the definition of probe module, global constructor, thread initialization function, help information function. Each probe module can fully customize the required fields to its own needs, with a fully custom construction process and thread initialization.
 
-method.rs为探测模块实现探测方法接口. 在这一部分, 我们提供了一些基础探测模块的实现方法并力求为探测模块的编写设计一种简单, 直观, 高性能的代码规范. 建议参照我们预设的探测模块进行模块开发.
+Method. rs implements the probe method interface for the probe module. In this part, we provide some basic detection module implementation methods and strive to design a simple, intuitive, high performance code specification for the detection module. It is recommended to refer to our preset detection module for module development.
 
-我们的探测模块与zmap的探测模块非常类似又稍有不同.  我们在编写探测模块时几乎照搬了zmap的核心逻辑, 但又对很多部分进行了性能上, 功能上, 简单直观上的改进, 并对可能导致问题的部分进行革除或修正.
+Our probe module is very similar but slightly different from that of zmap. When we wrote the probe module, we almost copied the core logic of zmap, but also improved many parts in terms of performance, function, simplicity and intuition, and eliminated or corrected the parts that may cause problems.
 
-注意:
+Attention:
 
-- 探测模块的创建应该符合规范, 在对应mod下以独立文件夹形式创建独立的mod. 
+- The creation of the probe module should comply with the specification and create a separate mod in the form of a separate folder under the corresponding mod.
 
-- 探测模块应由 mod.rs 和 method.rs 两个源文件构成, 数据包的处理等应放置在 tools/net_handle/packet下.
+- The probe module consists of two source files, mod.rs and method.rs. The processing of data packets is stored in tools/net_handle/packet.
 
-- 探测模块需要实现 全局构造方法(new) 和 线程初始化函数(init)
+- The probe module needs to implement a global constructor (new) and a thread initialization function (init)
 
-- ipv4探测模块需要实现 ProbeMethodV4 接口, ipv6探测模块需要实现 ProbeMethodV6 接口, 所有探测模块需要实现 帮助信息 接口
+- The ipv4 probe module must implement the ProbeMethodV4 interface, the ipv6 probe module must implement the ProbeMethodV6 interface, and all probe modules must implement the help interface
 
-- 所有可用 ipv4 探测模块应在 probe_mod_v4.rs 中进行挂载并在 PROBE_MODS_V4 中进行声明.
+- All available ipv4 probe modules should be mounted in probe_mod_v4.rs and declared in PROBE_MODS_V4.
 
-- 所有可用 ipv6 探测模块应在 probe_mod_v6.rs 中进行挂载并在 PROBE_MODS_V6 中进行声明.
+- All available ipv6 probe modules should be mounted in probe_mod_v6.rs and declared in PROBE_MODS_V6.
 
 ### target_iterators
 
-目标迭代器是各类探测算法的核心. 比如, 1.活跃地址生成推荐算法本质上解决的是接下来需要探测哪些目标的问题, 2.活跃端口推荐算法本质上解决的是接下来需要探测哪些目标的哪些端口的问题, 3.其它算法,比如拓扑探测中的目标,生存时间组合以及在一定网段进行随机地址生成以诱发icmp错误来发现一些有价值目标等, 本质上都是某种类型的目标迭代算法. 
+Target iterator is the core of all kinds of detection algorithms. For example, 1. The active address generation recommendation algorithm essentially solves the problem of which targets need to be detected next. 2. The active port recommendation algorithm essentially solves the problem of which ports of which targets need to be detected next, 3. Other algorithms, such as target in topology detection, lifetime combination and random address generation in a certain network segment to induce icmp errors to find some valuable targets, are essentially some type of target iteration algorithms.
 
-迭代对象一般包括并不限于, 地址, 地址端口对, 地址ttl(或hop_limit)组合, 地址特定载荷组合等. 我们将常见的类别抽象为特质, 迭代器需要实现其中的某种, 或自定义新的特质来使之适用于特定类型的发送接收函数, 或将之作为更高级的迭代器中的一部分.
+Iterative objects generally include, but are not limited to, addresses, address port pairs, address ttl(or hop_limit) combinations, address specific payload combinations, etc. We abstract common categories into attributes, and iterators need to implement one of them, either to customize new attributes to apply to specific types of send and receive functions, or as part of more advanced iterators.
 
-基础迭代器现在包括乘法循环群迭代器(包括ipv4, ipv6, ipv6模式字符串, 以及它们的带端口版本), 文件迭代器(按照是否已知目标数量分为 按字节数量分割的文件迭代器 和 按目标数量分割的文件迭代器), 活跃端口推荐迭代器(pmap_v4, pmap_v6), 后续我们将陆续加入活跃地址推荐算法迭代器, 拓扑探测迭代器, 以及别的一些重要的迭代算法.
+Base iterators now include multiplicative cyclic group iterators (including ipv4, ipv6, ipv6 mode strings, and their port versions), file iterators (divided into byte split file iterators and target split file iterators according to whether the number of targets is known), Active port recommendation iterators (pmap_v4, pmap_v6), and then we will gradually add active address recommendation algorithm iterators, topology detection iterators, and other important iterative algorithms.
 
 ## tools
 
 ### blocker
 
-黑白名单拦截器, 主要用来筛选有效源地址和避免向一些网段发送探测数据包. 
+A whitelist interceptor is mainly used to filter valid source addresses and avoid sending probe packets to some network segments.
 
-我们设计的拦截器算法能有效应对超大规模的黑白名单列表, 在内存中存储的有效信息(数组)一定小于黑白名单本身的大小. 单次匹配的最大计算次数仅为有效局部约束的网段种类数量(有效局部约束网段种类 <= 前缀聚合后的网段种类 <= 网段种类 <= 地址二进制位长度 ). 有效局部约束为正在探测的目标网段中包含的标记网段(标记网段在当前的目标网段之中), 且支持跟随目标范围变化快速动态调整.
+The interceptor algorithm we designed can effectively deal with very large blacklist lists, and the valid information stored in memory (array) must be smaller than the size of the blacklist itself. The maximum number of computation times for a single match is only the number of network segments with effective local constraints (network segment with effective local constraints <= Network segment with prefix aggregation <= address binary bit length). The effective local constraint is the marked network segment contained in the target network segment being detected (the marked network segment is in the current target network segment), and it supports rapid dynamic adjustment as the target range changes.
 
-我们设计的拦截器与其它部分完全独立, 这意味着您可以在任何场景中不受限制地使用它.
+We designed the interceptor to be completely independent of the rest, which means you can use it in any scenario without restrictions.
 
 ### check_duplicates
 
-目标查重器, 主要用在接收线程中对重复目标进行检查, 或在一些避免即时输出的场景(以pmap为例)中用作探测结果的记录器.
+Object checker, mainly used in the receiving thread to check for duplicate objects, or in some scenarios to avoid immediate output (pmap for example) as a probe result recorder.
 
-目标查重器一般使用位图, 哈希表, 布隆过滤器(Bloom Filter)等实现. 为准确性考虑, 当前只默认提供基于位图和哈希表的查重器, 如需要进行超大规模测量且可以接受一定的误识别率(如果 `contains` 返回 `true` , 则可能在过滤器中. 如果 `contains` 返回 false，则绝对不在布隆过滤器中)时, 建议调用[growable-bloom-filter](https://crates.io/crates/growable-bloom-filter).
+The target checker is generally implemented using bitmaps, hash tables, Bloom filters, etc. For accuracy, only bitmap and hash table based checkers are currently provided by default, if you need to make very large measurements and can accept a certain error rate (if 'contains' returns' true', it may be in the filter. If ` contains ` returns false, is absolutely not in bloom filter), suggest call [growable - bloom - filter] (https://crates.io/crates/growable-bloom-filter).
 
-此模块下的mod.rs文件定义了各种常用接口, 查重器算法需要实现其中的某些接口或自定义新的接口以应用于特定类型的接收函数.
+The mod.rs file under this module defines a variety of common interfaces, and the weight finder algorithm needs to implement some of them or customize new interfaces to apply to specific types of receiving functions.
 
 ### encryption_algorithm
 
-执行密钥生成, 随机数生成, 加密载荷, 数据包校验等功能的模块.
+Perform key generation, random number generation, encryption payload, packet verification and other functions of the module.
 
 ### file
 
-文件操作模块.主要用于获取路径, 解析文本, 写入文件等.
+File operation module. Mainly used for obtaining path, parsing text, writing files and so on.
 
 ### net_handle
 
-用于处理网络数据的工具库
+A library of tools for processing network data
 
-- **dns** : 用于dns解析的各种函数
-- **net_interface** : 处理网络硬件接口, 硬件地址定义及其工具函数等.
-- **net_type** : 网段定义, 网络类型定义, 及其相关工具函数.
-- **packet** : 数据包定义, 数据包生成, 数据包解析函数, 字段定义及其解析函数, 其它各种与数据包处理相关的工具函数.
+- **dns** : Various functions used for dns resolution
+- **net_interface** : Handles network hardware interfaces, hardware address definitions and their utility functions.
+- **net_type** : Network segment definition, network type definition, and related utility functions.
+- **packet** : packet definition, packet generation, packet parsing function, field definition and its parsing function, and other tool functions related to packet processing.
 
 ### others
 
-其他各类工具函数和底层算法, 如 排序算法, 查找算法, 字符串解析函数, 时间处理等.
+Various other tool functions and underlying algorithms, such as sorting algorithms, lookup algorithms, string parsing functions, time processing, etc.
 
-## 系统参数(sys_conf.ini)
+## System parameter (sys_conf.ini)
 
-以下所有设置中涉及到的路径, 如果为绝对路径则完全为用户指定路径, 如果为相对路径则以安装路径为起始位置.可输入不带参数的smap指令获取当前安装路径.
+If the path is absolute, the path is specified by the user. If the path is relative, the path starts from the installation path. You can enter the smap command without parameters to obtain the current installation path.
 
-- summary_file: 记录文件路径. 注意不要以 .扩展名 的形式结尾, 系统会根据使用的模式, 目标将该路径填充为
+- summary_file: records the file path. Be careful not to end the path with the. Extension. The path will be filled as
 
-  ```shell
-  设置的路径_模式名称_目标名称.csv
-  ```
+```shell
+Set path_mode name_target name.csv
+` ` `
 
-- default_output_mod: 默认输出模块名称
+- default_output_mod: indicates the default output module name
 
-- default_send_attempt_num: 发送失败后进行重试的默认次数
+- default_send_attempt_num: Default number of times to retry after sending failed attempt_num
 
-- default_source_ports: 默认源端口范围. **注意: 由于一部分探测模块将源端口作为验证条件, 原则上该范围必须足够大,推荐万级以上.**
+- default_source_ports: indicates the default source port range.** Note: Some detection modules use the source port as the verification condition. In principle, the range must be large enough
 
-- default_probe_mod_v4: 默认ipv4探测模块. 除非有绝对必要, 一般不要修改此选项, 建议保持默认探测模块为icmp探活模块.
+- default_probe_mod_v4: indicates the default ipv4 probe module. Do not change this parameter unless absolutely necessary. You are advised to keep the default probe module as icmp probe module.
 
-- default_probe_mod_v6: 默认ipv6探测模块. 除非有绝对必要, 一般不要修改此选项, 建议保持默认探测模块为icmp探活模块.
+- default_probe_mod_v6: indicates the default ipv6 probe module. Do not change this parameter unless absolutely necessary. You are advised to keep the default probe module as icmp probe module.
 
-- default_batch_size: 发送线程连续发送数据包的最小单位. 速率控制器在每个最小发送单位中至少执行一次速率控制函数.
+- default_batch_size: specifies the minimum unit of continuous data packets sent by the sending thread. The rate controller performs the rate control function at least once in each minimum transmit unit.
 
-- default_must_sleep: 发送线程发送一个最小单位后至少等待的时间, 以 **微秒** 为单位.
+- default_must_sleep: indicates the minimum wait time after the sending thread sends a minimum unit, in ** microseconds **.
 
-- default_cool_time: 发送线程结束到关闭接收线程之间的默认等待时间.
+- default_cool_time: specifies the default wait time between the end of the sending thread and the end of the receiving thread.
 
-- default_ports: 默认目标端口. 除非有绝对必要, 一般不要修改此选项. 注意: **网络层协议探测模块会对目标端口是否为0进行检查.**
+- default_ports: indicates the default target port. Do not modify this option unless absolutely necessary. Note: ** The network layer protocol probe module checks whether the target port is 0.**
 
-- output_file_pattern_v4: ipv4结果输出文件路径, 可使用%d %m %Y %H %M等模式字段, 这些模式字段将自动置换为当前时间, 请参照[DateTime in chrono](https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
+- output_file_pattern_v4:  ipv4 result output file path, can use %d %m %Y %H %M mode fields, these mode fields will be automatically replaced with the current time, Please refer to [DateTime in chrono] (https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
 
-- output_file_pattern_v6: ipv6结果输出文件路径, 可使用%d %m %Y %H %M等模式字段, 这些模式字段将自动置换为当前时间, 请参照[DateTime in chrono](https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
+- output_file_pattern_v6:  ipv6 result output file path, can use %d %m %Y %H %M mode fields, these mode fields will be automatically replaced with the current time, Please refer to [DateTime in chrono] (https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
 
-- default_output_buffer_capacity: 输出缓冲区默认大小, 以字节为单位
+- default_output_buffer_capacity: indicates the default output buffer size, in bytes
 
-- active_check_count: 接收线程每隔多少个活跃数据包检查一次管道消息
+- active_check_count: specifies how many active packets the receiving thread checks for pipeline messages
 
-- capture_timeout: 捕获器的读取超时. 设为0时将无限期阻塞.
+- capture_timeout: indicates the read timeout of the trap. Set to 0 to block indefinitely.
 
-- pcap_recv_buffer_size: pcap接收缓冲区大小
+- pcap_recv_buffer_size: indicates the size of the pcap receive buffer
 
-- get_socket_attempts: 获取系统socket失败后的重试次数
+- get_socket_attempts: indicates the number of attempts to obtain the system socket after attempts fail
 
-- attempt_sleep_millis: 发送失败后睡眠的毫秒数, 只有在设置发送失败后进行睡眠的发送函数中才有效.
+- attempt_sleep_millis: Number of milliseconds to sleep after failed send, valid only for send functions that set to sleep after failed send.
 
-- kp: pid算法的p参数. 只有您确认自己的修改目的并预期到合理结果时才能修改此配置.
+-kp: indicates the p parameter of the pid algorithm. Only modify this configuration if you are sure of your purpose and expect reasonable results.
 
-- ki: pid算法的i参数. 只有您确认自己的修改目的并预期到合理结果时才能修改此配置.
+-ki: indicates the i parameter of the pid algorithm. Only modify this configuration if you are sure of your purpose and expect reasonable results.
 
-- ki_limit: pid算法的稳态误差限制参数.  当 稳态误差 大于 $  abs(ki\_limit * tar\_rate) $ 时, 稳态误差将被置0. 只有您确认自己的修改目的并预期到合理结果时才能修改此配置.
+- ki_limit: indicates the steady-state error limit parameter of the pid algorithm. If the steady-state error is greater than $abs(ki\_limit * tar\_rate) $, the steady-state error is set to 0. Only modify this configuration if you are sure of your purpose and expect reasonable results.
 
-- kd: pid算法的d参数. 只有您确认自己的修改目的并预期到合理结果时才能修改此配置.
+-kd: indicates the d parameter of the pid algorithm. Only modify this configuration if you are sure of your purpose and expect reasonable results.
 
-- destination_black_list_v4: ipv4目的地址黑名单默认路径.
+- destination_black_list_v4: indicates the default path of the ipv4 destination blacklist.
 
-- destination_white_list_v4: ipv4目的地址白名单默认路径.
+- destination_white_list_v4: default ipv4 destination whitelist path.
 
-- source_black_list_v4: ipv4源地址黑名单默认路径.
+- source_black_list_v4: indicates the default path of the source IP address blacklist.
 
-- source_white_list_v4: ipv4源地址白名单默认路径.
+- source_white_list_v4: indicates the default path of the ipv4 source address whitelist.
 
-- destination_black_list_v6: ipv6目的地址黑名单默认路径.
+- destination_black_list_v6: indicates the blacklisted destination path.
 
-- destination_white_list_v6: ipv6目的地址白名单默认路径.
+- destination_white_list_v6: indicates the default path of the ipv6 destination whitelist.
 
-- source_black_list_v6: ipv6源地址黑名单默认路径.
+- source_black_list_v6: indicates the default path of the blacklist.
 
-- source_white_list_v6: ipv6源地址白名单默认路径.
+- source_white_list_v6: indicates the default whitelist path of the source address.
 
-- fallback_bytes: 文件迭代器目标范围回退字节数
+- fallback_bytes: indicates the number of bytes in the target range of the file iterator
 
-- max_read_buf_bytes: 文件迭代器最大读取缓冲区大小
+- max_read_buf_bytes: indicates the maximum read buffer size of the file iterator
 
-- default_payload_file: 探测模块载荷文件路径
+- default_payload_file: probe the load file path of the module
 
-- log_pattern: 日志格式, 参见 [log_pattern](https://docs.rs/log4rs/*/log4rs/encode/pattern/index.html)
+- log_pattern: log format, see [log_pattern] (https://docs.rs/log4rs/ * / log4rs/encode/pattern/index. The HTML)
 
-- log_name_pattern: 日志文件名称格式, 在手动指定日志目录时有效. 可使用%d %m %Y %H %M等模式字段, 这些模式字段将自动置换为当前时间, 请参照[DateTime in chrono](https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
+- log_name_pattern: specifies the log file name format. This parameter is valid when the log directory is manually specified. Mode fields such as %d %m %Y %H %M can be used, which will automatically be replaced with the current time, Please refer to [DateTime in chrono] (https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
 
-- running_time_pattern: 运行时间显示格式, 可使用 {d} {h} {m} {s}等标识字段, 系统将按照实际运行时间进行替换.
+- running_time_pattern: indicates the pattern of the running time. Fields such as {d} {h} {m} {s} can be used. The system replaces the pattern with the actual running time.
 
-- forecast_completion_time_pattern: 预期完成时间显示格式, 参照 [DateTime in chrono](https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
+- forecast_completion_time_pattern:  Expected completion time display format, refer to [DateTime in chrono] (https://docs.rs/chrono/0.4.31/chrono/struct.DateTime.html#method.format)
 
-### AddrMiner-S 系统参数
+### AddrMiner-S System parameters
 
-- default_code_probe_mod_v6: 默认编码探测模块
-- space_tree_type: 空间树类型
-- budget: 默认预算
-- batch_size: 每轮次的预算(每轮次最大生成数量)
-- divide_dim: 划分维度, 如4代表半字节划分
-- divide_range: 划分范围, 指的是按照地址结构哪部分进行分裂, 其它部分将在输入时置换为0. 如设为1-64, 所有地址的后64位将被置换为0, 且不作为分裂和生成的部分
-- max_leaf_size: 聚类区域种子地址数量上限(小于等于该数量的节点不再继续分裂)
-- no_allow_gen_seeds: 不允许生成种子地址(但是可以生成输入文件中不用作种子地址的其它地址)
-- no_allow_gen_seeds_from_file: 不允许生成输入文件中的任何地址, 如果此项为真, no_allow_gen_seeds将强制为真
-- learning_rate: 学习率
-- region_extraction_num: 区域抽取数量, 每次地址生成时将选择前n个区域(奖励最大排名), n是区域抽取数量和队列长度中的最小值
-- seeds_num: 种子地址数量, 从输入文件中随机选取指定数量个地址作为种子地址
+- default_code_probe_mod_v6: default coding probe module
+- space_tree_type: indicates the type of the space tree
+- budget: indicates the default budget
+- batch_size: budget per round (maximum number of builds per round)
+- divide_dim: indicates the partition of dimensions. For example, 4 indicates half-byte partition
+- divide_range: Divide the range according to which part of the address structure is divided. Other parts will be replaced with 0 when input. If it is set to 1-64, the last 64 bits of all addresses will be replaced with 0 and will not be split and generated
+- max_leaf_size: indicates the upper limit of the number of seed addresses in a cluster area. Nodes that are less than or equal to this number are no longer split.
+- no_allow_gen_seeds: Seed addresses are not allowed to be generated (but other addresses in the input file that are not used as seed addresses can be generated)
+- no_allow_gen_seeds_from_file: No addresses in the input file are allowed to be generated. If this is true, no_allow_gen_seeds is forced to be true
+- learning_rate: indicates the learning rate
+- region_extraction_num: Number of regions extracted. The first n regions are selected each time an address is generated. n is the minimum value of the number of regions extracted and the queue length
+- seeds_num: indicates the number of seed addresses. A specified number of seed addresses are randomly selected from the input file
 
 
-### Pmap系统参数
+Pmap system parameters
 
-- pmap_default_ports: pmap默认目标端口范围
-- pmap_default_probe_mod_v4: pmap_v4默认探测模块名称
-- pmap_default_probe_mod_v6: pmap_v6默认探测模块名称
-- pmap_sampling_pro: pmap默认采样比例(预扫描比例)
-- pmap_min_sample_num: pmap最小采样数量(预扫描目标地址数量)
-- pmap_budget: pmap端口推荐默认预算
-- pmap_batch_num: pmap推荐扫描默认轮次(如: 如果其值设为10, 就将推荐扫描阶段的所有目标地址分为10份, 对其中的一份全部扫描(所有推荐端口)完毕后进行对下一份的扫描, 其间根据用户的设定选择是否对概率相关图进行更新)
-- pmap_allow_graph_iter: 是否允许概率相关图更新的默认值
-- pmap_use_hash_recorder: 是否默认使用哈希表作为记录器. 如果设为真, 默认以哈希表(适用总范围较大且推荐轮次较多的情形)作为记录器, 如果设为假, 默认以位图(适用总范围较小且活跃比例较高的情形)作为记录器.
+- pmap_default_ports: specifies the default destination port range of pmap
+- pmap_default_probe_mod_v4: indicates the default probe module name of pmap_v4
+- pmap_default_probe_mod_v6: indicates the default probe module name of pmap_v6
+- pmap_sampling_pro: indicates the default pmap sampling ratio (pre-scan ratio).
+- pmap_min_sample_num: specifies the minimum number of pmap samples (number of pre-scanned target addresses).
+- pmap_budget: indicates the recommended default budget for pmap ports
+- pmap_batch_num: pmap recommended scan cycle (for example: If the value is set to 10, all the target addresses in the recommended scanning phase will be divided into 10 copies, one of which will be scanned completely (all recommended ports), and the next one will be scanned, during which the probability correlation graph will be updated according to the user's Settings).
+- pmap_allow_graph_iter: Default value for whether to allow probabilistic correlation graph updates
+- pmap_use_hash_recorder: Specifies whether to use the hash table as the recorder by default. If true, the hash table is used as the logger by default (for cases with a larger total range and more recommended rounds), and if false, the bitmap is used as the logger (for cases with a smaller total range and a higher percentage of activity).
 
-### topo系统参数
+### topo System parameters
 
-- topo_max_ttl: 默认最大ttl, 最大值不超过64
-- topo_udp_dest_port: 拓扑探测模块默认udp端口
-- topo_payload: 拓扑探测模块默认负载
-- topo4_rand_bits: ipv4模式字符串随机比特位(于固定比特位有效)
-- topo4_default_probe_mod: topo4默认拓扑探测模块
-- topo6_rand_bits: ipv6模式字符串随机比特位(于固定比特位有效)
-- topo6_default_probe_mod: topo6默认拓扑探测模块
+- topo_max_ttl: indicates the default maximum ttl. The maximum value cannot exceed 64
+- topo_udp_dest_port: specifies the default udp port number of the topology probe module
+- topo_payload: Default payload of the topology probe module
+- topo4_rand_bits: string of random bits in ipv4 mode (valid for fixed bits).
+- topo4_default_probe_mod: indicates the topo4 default topology detection module
+- topo6_rand_bits: string of random bits (valid for fixed bits) in ipv6 mode.
+- topo6_default_probe_mod: topo6 default topology probe module
