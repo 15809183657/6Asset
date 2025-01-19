@@ -94,7 +94,7 @@ Note: The source address checker will automatically filter private addresses and
 
 # Usage Example
 
-To probe with a budget of 50M, bandwidth of 30M, and the number of addresses generated per round based on reinforcement learning feedback, using online alias prefix detection:
+To probe with a budget of 50M, bandwidth of 30M, and the number of addresses generated per round based on reinforcement learning feedback is 2M, using online alias prefix detection:
 
 ```bash
 smap -m a6 -b 30m -f ./testData.txt -a budget=50000000 -a region_extraction_num=1000 --cool_seconds 3 --output_file_v6 ./res.txt -a batch_size=2000000 -a aliased_threshold=0.8 -a aliased_prefixes_check=true
