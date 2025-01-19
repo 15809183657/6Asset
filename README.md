@@ -55,6 +55,7 @@ Note:
 
 ```shell
 ./install_macos.sh
+```
 
 ## Pre-Configuration
 ### Check the configuration of the destination and source address black and white lists (Path: block_list folder under the installation path; you can enter the command 6Asset to get the current installation path). The black and white lists support domain names (multiple addresses corresponding to the domain name can be added simultaneously), single addresses, and subnets.
