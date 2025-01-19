@@ -1,6 +1,6 @@
 # 6Asset
 
-By constructing an association mapping table, the 16-bit port numbers are mapped to hexadecimal values as part of the address, unifying the prediction of IPv6 addresses and ports to directly predict potential active assets. At the same time, it utilizes an asset space tree and a reinforcement learning feedback mechanism to generate target assets and proposes the CAPD online lightweight alias prefix detection method, effectively reducing the impact of aliased assets on detection.
+By constructing an association mapping table, the 16-bit port numbers are mapped to hexadecimal values as part of the address, unifying the prediction of IPv6 addresses and ports, 6Asset can directly predict potential active assets. At the same time, it utilizes an asset space tree and a reinforcement learning feedback mechanism to generate target assets and proposes the CAPD online lightweight alias prefix detection method, effectively reducing the impact of aliased assets on detection.
 
 ## Installation
 
