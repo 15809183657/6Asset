@@ -1,3 +1,49 @@
+# 6Asset
+
+By constructing an association mapping table, the 16-bit port numbers are mapped to hexadecimal values as part of the address, unifying the prediction of IPv6 addresses and ports to directly predict potential active assets. At the same time, it utilizes an asset space tree and a reinforcement learning feedback mechanism to generate target assets and proposes the CAPD online lightweight alias prefix detection method, effectively reducing the impact of aliased assets on detection.
+
+## Installation
+
+6Asset supports mainstream platforms such as Windows, Linux, macOS, and BSD.
+
+### Rust Environment
+
+Refer to the official documentation for installation:
+
+[Other Installation Methods - Rust Forge (rust-lang.org)](https://forge.rust-lang.org/infra/other-installation-methods.html)
+
+### Build and Installation
+
+#### Preparation
+
+1. Open **sys_conf.ini** in the **root directory** and modify the default configurations and prompt messages. 
+
+   These configurations will be read and written into the program during compilation. Unless recompiled, the configurations in this file will remain unchanged.
+
+   All prompt messages are written by this file. You can translate the program into another language by modifying the messages in this file.
+
+2. Open **Cargo.toml** in the **root directory** and adjust the necessary settings according to your system platform and requirements.
+
+   Recommendation: Set `opt-level` under `[profile.release]` to `3`.
+
+3. smap depends on pcap, which is checked and installed by the automated installation script. No manual installation or configuration is required.
+
+#### Installation
+
+In the **root directory**, choose the installation command corresponding to your system platform and follow the prompts to enter the installation path or select the default installation path.
+
+Note:
+
+- Ensure you are connected to the internet during installation.
+- The custom installation path must include the program name, e.g., `D:\smap`.
+- On Windows, run the PowerShell script using a terminal application, and the default compilation target is `stable-x86_64-pc-windows-gnu`.
+- Do not set the installation path to the source code directory.
+
+##### Windows (Admin Privileges)
+
+```powershell
+.\install_windows.ps1
+
 # 6Asset Parameters
 
 - **f**: File path for port mapping
@@ -14,6 +60,16 @@
 - **aliased_prefixes_path**: Output file for aliased prefixes (default does not output)
 
 ---
+Linux (Root)
+
+./install_linux.sh
+macOS (Root)
+
+./install_macos.sh
+Usage
+After installation, you can run 6Asset using the provided scripts or binaries. Refer to the documentation for detailed usage instructions.
+
+
 
 # IPv6AliasedCheck Parameters
 
