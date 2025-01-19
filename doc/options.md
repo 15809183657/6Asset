@@ -14,7 +14,7 @@ smap is a high-performance network detector for researchers and professionals. S
 
 ```shell
 smap -m mode_name  -i interface_name_1  -i interface_name_2 -i interface_name_3  ...
-` ` `
+、、、
 
 Note: The first parameter of the send and receive functions is the network interface index (starting at 0), and the base mode usually calls only the first network interface by default
 
