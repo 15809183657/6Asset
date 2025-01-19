@@ -39,10 +39,27 @@ Note:
 - On Windows, run the PowerShell script using a terminal application, and the default compilation target is `stable-x86_64-pc-windows-gnu`.
 - Do not set the installation path to the source code directory.
 
-##### Windows (Admin Privileges)
+##### Windows (root)
 
+   ```powershell
+   .\install_windows.ps1
+   ```
 
-.\install_windows.ps1
+##### Linux (root)
+
+```shell
+./install_linux.sh
+```
+
+##### Macos (root)
+
+```shell
+./install_macos.sh
+
+## Pre-Configuration
+### Check the configuration of the destination and source address black and white lists (Path: block_list folder under the installation path; you can enter the command smap to get the current installation path). The black and white lists support domain names (multiple addresses corresponding to the domain name can be added simultaneously), single addresses, and subnets.
+
+Note: The source address checker will automatically filter private addresses and marked subnets, regardless of whether they are automatically retrieved from the system or manually entered. If you need to use private addresses as source addresses, such as those from campus networks, corporate, or home internal networks, you must add the local network to the source address whitelist.
 
 # 6Asset Parameters
 
@@ -60,16 +77,6 @@ Note:
 - **aliased_prefixes_path**: Output file for aliased prefixes (default does not output)
 
 ---
-Linux (Root)
-
-./install_linux.sh
-macOS (Root)
-
-./install_macos.sh
-Usage
-After installation, you can run 6Asset using the provided scripts or binaries. Refer to the documentation for detailed usage instructions.
-
-
 
 # IPv6AliasedCheck Parameters
 
