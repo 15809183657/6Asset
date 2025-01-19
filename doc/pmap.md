@@ -1,8 +1,8 @@
 # Pmap
-- pmap_sampling_pro: pmap采样比例(预扫描比例)
-- pmap_min_sample_num: pmap最小采样数量(预扫描目标地址数量)
-- pmap_budget: pmap端口推荐预算
-- pmap_batch_num: pmap推荐扫描轮次(如: 如果其值设为10, 就将推荐扫描阶段的所有目标地址分为10份, 对其中的一份全部扫描(所有推荐端口)完毕后进行对下一份的扫描, 其间根据用户的设定选择是否对概率相关图进行更新)
-- pmap_allow_graph_iter: 是否允许概率相关图更新
-- pmap_use_hash_recorder: 是否使用哈希表作为记录器. 如果设为真, 默认以哈希表(适用总范围较大且推荐轮次较多的情形)作为记录器, 如果设为假, 默认以位图(适用总范围较小且活跃比例较高的情形)作为记录器.
-- pmap_port_num_limit: 开放端口超过该限制的地址将被视为异常地址, 不参与概率相关图训练
+- pmap_sampling_pro: pmap sampling ratio (pre-scan ratio)
+- pmap_min_sample_num: specifies the minimum number of pmap samples (number of pre-scanned target addresses).
+- pmap_budget: indicates the recommended pmap port budget
+- pmap_batch_num: pmap recommended scan cycle (for example, if the value is set to 10, all target addresses in the recommended scan phase are divided into 10 copies. After scanning one copy (all recommended ports), the next copy is scanned. In the process, whether to update the probability correlation graph according to the user's Settings is selected.)
+- pmap_allow_graph_iter: Specifies whether to allow probability correlation graphs to be updated
+- pmap_use_hash_recorder: Specifies whether to use a hash table as a recorder. If true, the hash table is used as the logger by default (for cases with a larger total range and more recommended rounds), and if false, the bitmap is used as the logger (for cases with a smaller total range and a higher percentage of activity).
+- pmap_port_num_limit: Addresses whose open ports exceed this limit are regarded as abnormal addresses and do not participate in probability correlation graph training
