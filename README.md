@@ -99,3 +99,9 @@ To probe with a budget of 50M, bandwidth of 30M, and the number of addresses gen
 
 ```bash
 smap -m a6 -b 60m -f ./testData.txt -a budget=5000000 -a region_extraction_num=1000 --cool_seconds 3 --output_file_v6 ./res.txt -a batch_size=2000000 -a aliased_threshold=0.8 -a aliased_prefixes_check=true
+```
+
+
+# IPv6 Asset Hitlist 
+We conduct extensive scanning and release IPv6 Asset Hitlist of 306.2M assets, including 117.5M ICMP-Inactive assets. Our dataset supports IPv6 service identification and security analysis, contributing to future research on IPv6 security. The link below provides public access to all the assets we have collected：
+https://drive.google.com/file/d/1m9IdXj3L0x2H4goe1Fls9-gyqtQt1Oce/view?usp=sharing
